@@ -2,8 +2,8 @@
 // Created by anselme on 08/03/2026.
 //
 
-#ifndef TWODSHAPES_SHADER_H
-#define TWODSHAPES_SHADER_H
+#ifndef LEARN_OPEN_GL_SHADER_H
+#define LEARN_OPEN_GL_SHADER_H
 
 #include <string>
 #include <unordered_map>
@@ -49,4 +49,4 @@ private:
 };
 
 
-#endif //TWODSHAPES_SHADER_H
+#endif //LEARN_OPEN_GL_SHADER_H

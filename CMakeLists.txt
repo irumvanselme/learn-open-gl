@@ -11,6 +11,10 @@ include_directories(${GLFW_ROOT}/include)
 set(GLEW_ROOT ${CMAKE_SOURCE_DIR}/Dependencies/GLEW)
 include_directories(${GLEW_ROOT}/include)
 
+# Dependency: STB
+set(STB_ROOT ${CMAKE_SOURCE_DIR}/Dependencies/STB)
+include_directories(${STB_ROOT}/include)
+
 find_package(OpenGL REQUIRED)
 
 # Common libraries
@@ -25,8 +29,14 @@ set(COMMON_LIBS
 
 # Core Modules
 set(CORE_MODULES
+        src/Core/Core.h
+        src/Core/VertexBufferLayout.h
+
         src/Core/Application.h
         src/Core/Application.cpp
+
+        src/Core/Renderer.h
+        src/Core/Renderer.cpp
 
         src/Core/Shader.h
         src/Core/Shader.cpp
@@ -42,6 +52,9 @@ set(CORE_MODULES
 
         src/Core/IndexBuffer.h
         src/Core/IndexBuffer.cpp
+
+        src/Core/Texture.cpp
+        src/Core/Texture.h
 )
 
 # Include the Core module

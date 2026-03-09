@@ -21,15 +21,26 @@
 #include <GLFW/glfw3.h>
 
 #include "Application.h"
-
 #include "Library.h"
+
+/**
+ * This is the callback function that will be called when the window is resized.
+ *
+ * @param _window the window that was resized, we can use it to get the new width and height of the window.
+ * @param width the new width of the window, we can use it to update the view port to match the new window size.
+ * @param height the new height of the window, we can use it to update the view port to match the new window size.
+ */
+void FrameBufferSizeCallback(GLFWwindow* _window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
 
 Application::Application(const int width, const int height, std::string  appTitle) : width_(width),
                                                                                      height_(height), appTitle_(std::move(appTitle)), window_(nullptr)
 {
     /**
      *  This function initializes the GLFW library.
-     *  Before most GLFW functions can be used, GLFW must be initialized, and before an application terminates
+     *  Before most GLFW functions can be used, GLFW must be init__APPLE__ialized, and before an application terminates
      *  GLFW should be terminated in order to free any resources allocated during or after initialization.
      **/
     if (!glfwInit())
@@ -38,7 +49,9 @@ Application::Application(const int width, const int height, std::string  appTitl
         return;
     }
 
-    std::cout << "[DEBUG] GLFW version: " << glfwGetVersionString() << std::endl;
+    #ifdef ENABLE_DEBUG_LOG
+        std::cout << "[DEBUG] GLFW version: " << glfwGetVersionString() << std::endl;
+    #endif
 
     // We are going to use OpenGL 3.3, so we need to set the major and minor version of the OpenGL context that we want to create.
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -72,10 +85,12 @@ Application::Application(const int width, const int height, std::string  appTitl
         return;
     }
 
-    gl_try(glViewport(0, 0, width_, height_));
-
-    // TODO: Register a callback on resize to re-set the view port.
-    //       ref: https://learnopengl.com/Getting-started/Hello-Window
+    // TODO: Check why setting this on Mac loads the image in the bottom right position.
+    // // Set the view port
+    // gl_try(glViewport(0, 0, width_, height_));
+    //
+    // // Add a callback so that when the window is resized, the view port is updated to match the new window size.
+    // gl_try(glfwSetFramebufferSizeCallback(window_, FrameBufferSizeCallback));
 }
 
 Application::~Application()

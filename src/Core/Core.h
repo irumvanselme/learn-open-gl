@@ -2,14 +2,20 @@
 // Created by anselme on 08/03/2026.
 //
 
-#ifndef TWODSHAPES_CORE_H
-#define TWODSHAPES_CORE_H
+#ifndef LEARN_OPEN_GL_CORE_H
+#define LEARN_OPEN_GL_CORE_H
 
-#include "Application.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include <STB/stb_image.h>
+
 #include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "Library.h"
+#include "Renderer.h"
+#include "Application.h"
 
-#endif //TWODSHAPES_CORE_H
+#endif // LEARN_OPEN_GL_CORE_H

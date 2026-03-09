@@ -2,57 +2,71 @@
 // Created by anselme on 07/03/2026.
 //
 
-#include <iostream>
 #include <GL/glew.h>
+#include <Core.h>
 
-#include <Application.h>
-#include <Library.h>
-#include <Shader.h>
-#include <VertexArray.h>
-#include <VertexBuffer.h>
+#define INITIAL_WIDTH 800
+#define INITIAL_HEIGHT 800
 
 int main()
 {
-    constexpr int width = 800;
-    constexpr int height = 400;
-
     constexpr std::string appTitle = "Hello world";
-    const Application app(width, height, appTitle);
-    app.PrintDebugInfo();
+    Application app(INITIAL_WIDTH, INITIAL_HEIGHT, appTitle);
 
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    #ifdef ENABLE_DEBUG_LOG
+        app.PrintDebugInfo();
+    #endif
+
+    // Load the shader program
+    Shader shader("Resources/Shaders/RectangleWithTexture.glsl");
 
     // These are vertices positions 3D Points
     constexpr float positions[] = {
-        -.5f, -.5f, 0.0f,   1.0f, 0.0f, 0.0f, // A
-         .5f, -.5f, 0.0f,    0.0f, 1.0f, 0.0f, // B
-         .0f, .5f, 0.0f,     0.0f, 0.0f, 1.0f // C
+        // positions          // colors           // texture coords
+        0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
+        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+        -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // top left
     };
 
-    // Load the shader program
-    Shader shader("Resources/Shaders/Triangle.glsl");
+    constexpr unsigned int indices[] = {
+        0, 1, 3, // first triangle
+        1, 2, 3 // second triangle
+    };
 
-    // Initialize the vertex Array
     VertexArray va;
-    VertexBuffer vb(positions, sizeof(positions));
-    gl_try(glEnableVertexAttribArray(0));
+    va.Bind();
 
-    gl_try(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float))));
-    gl_try(glEnableVertexAttribArray(1));
+    VertexBuffer vb(positions, sizeof(positions));
+    vb.Bind();
+
+    IndexBuffer ib(indices, 6);
+    ib.Bind();
+
+    VertexBufferLayout vbl;
+    vbl.Push<float>(3); // position
+    vbl.Push<float>(3); // color
+    vbl.Push<float>(2); // texture coords
+    va.AddBuffer(vb, vbl);
 
     shader.Bind();
+
+    Texture texture0("Resources/Textures/container.jpg");
+    Texture texture1("Resources/Textures/awesomeface.png");
+
+    texture0.Bind(0);
+    shader.SetUniform1i("texture0", 0);
+    texture1.Bind(1);
+    shader.SetUniform1i("texture1", 1);
+
+    Renderer renderer;
+
+    // Set the background / clear color
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     while (!app.IsClosed())
     {
         app.NewFrame();
-
-        shader.Bind();
-
-        // float timeValue = glfwGetTime();
-        // float greenValue = sin(timeValue) / 2.0f + 0.5f;
-        //
-        // shader.SetUniform4f("customColor", 0.0f, greenValue, 0.0f, 1.0f);
-        gl_try(glDrawArrays(GL_TRIANGLES, 0, 3));
-
+        renderer.Draw(va, ib, shader);
         app.ClearFrame();
     }
 
