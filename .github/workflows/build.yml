@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install Python dependencies
+      run: pip install jinja2
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          xorg-dev \
+          libwayland-dev \
+          libxkbcommon-dev \
+          wayland-protocols
+
+    - name: Get CMake and Ninja
+      uses: lukka/get-cmake@latest
+
+    - name: Configure CMake
+      run: cmake -S . -B build -G Ninja
+
+    - name: Build
+      run: cmake --build build
