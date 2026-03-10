@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <utility>
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 /**
  *  Wha is GLFW? -> `Graphics Library Framework`
@@ -77,10 +77,10 @@ Application::Application(const int width, const int height, std::string  appTitl
 
     glfwMakeContextCurrent(window_);
 
-    // Initialize the GLEW, the Interface to help use the methods from the OpenGL specs, and check if it is initialized successfully or not.
-    if (const GLenum err = glewInit(); GLEW_OK != err)
+    // Initialize GLAD to load OpenGL function pointers
+    if (!gladLoadGL(glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize GLEW!" << std::endl;
+        std::cout << "Failed to initialize GLAD!" << std::endl;
         Destroy();
         return;
     }

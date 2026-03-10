@@ -4,28 +4,37 @@ project(LearnOpenGL)
 set(CMAKE_CXX_STANDARD 20)
 
 # Dependency GLFW
-set(GLFW_ROOT ${CMAKE_SOURCE_DIR}/Dependencies/GLFW)
-include_directories(${GLFW_ROOT}/include)
+include(FetchContent)
+FetchContent_Declare(
+        glfw
+        GIT_REPOSITORY https://github.com/glfw/glfw.git
+        GIT_TAG 3.4
+)
+FetchContent_MakeAvailable(glfw)
 
-# Dependency: GLEW
-set(GLEW_ROOT ${CMAKE_SOURCE_DIR}/Dependencies/GLEW)
-include_directories(${GLEW_ROOT}/include)
+FetchContent_Declare(
+        stb
+        GIT_REPOSITORY https://github.com/nothings/stb.git
+        GIT_TAG master
+)
+FetchContent_MakeAvailable(stb)
 
-# Dependency: STB
-set(STB_ROOT ${CMAKE_SOURCE_DIR}/Dependencies/STB)
-include_directories(${STB_ROOT}/include)
+# Fetch GLAD (OpenGL loader)
+FetchContent_Declare(
+        glad
+        GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+        GIT_TAG glad2
+)
+FetchContent_MakeAvailable(glad)
+
+# Generate GLAD for OpenGL 4.6 Core Profile
+add_subdirectory("${glad_SOURCE_DIR}/cmake" glad_cmake)
+glad_add_library(glad_gl_core_46 REPRODUCIBLE API gl:core=4.6)
+
+add_library(stb INTERFACE)
+target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
 
 find_package(OpenGL REQUIRED)
-
-# Common libraries
-set(COMMON_LIBS
-        ${GLFW_ROOT}/lib-arm64/libglfw3.a
-        ${GLEW_ROOT}/lib/libGLEW.a
-        OpenGL::GL
-        "-framework Cocoa"
-        "-framework IOKit"
-        "-framework CoreVideo"
-)
 
 # Core Modules
 set(CORE_MODULES
@@ -67,6 +76,20 @@ target_compile_definitions(LearnOpenGL
         PRIVATE PROJECT_ROOT="${CMAKE_SOURCE_DIR}"
 )
 
+target_link_libraries(LearnOpenGL
+        PRIVATE
+        glfw
+        glad_gl_core_46
+        stb
+        OpenGL::GL
+)
 
-target_link_libraries(LearnOpenGL ${COMMON_LIBS})
-
+# Platform-specific libraries
+if(APPLE)
+    target_link_libraries(LearnOpenGL
+            PRIVATE
+            "-framework Cocoa"
+            "-framework IOKit"
+            "-framework CoreVideo"
+    )
+endif()

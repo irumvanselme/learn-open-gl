@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include <GL/glew.h>
-#include <STB/stb_image.h>
+#include <glad/gl.h>
+#include <stb_image.h>
 
 #include "Library.h"
 #include "Texture.h"

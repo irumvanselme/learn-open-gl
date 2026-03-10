@@ -4,7 +4,7 @@
 
 #include <cstdint>
 #include <iostream>
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 #include "Library.h"
 #include "VertexArray.h"

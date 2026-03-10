@@ -6,7 +6,7 @@
 #define LEARN_OPEN_GL_CORE_H
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <STB/stb_image.h>
+#include <stb_image.h>
 
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
