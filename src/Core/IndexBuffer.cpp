@@ -1,7 +1,7 @@
 //
 // Created by anselme on 06/03/2026.
 //
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 #include "IndexBuffer.h"
 #include "Library.h"

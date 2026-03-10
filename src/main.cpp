@@ -2,7 +2,7 @@
 // Created by anselme on 07/03/2026.
 //
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 #include <Core.h>
 
 #define INITIAL_WIDTH 800
@@ -10,7 +10,7 @@
 
 int main()
 {
-    constexpr std::string appTitle = "Hello world";
+    const std::string appTitle = "Hello world";
     Application app(INITIAL_WIDTH, INITIAL_HEIGHT, appTitle);
 
     #ifdef ENABLE_DEBUG_LOG

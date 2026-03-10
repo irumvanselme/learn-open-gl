@@ -1,2 +1,17 @@
 Dependencies
+
+# CLion
 .idea/
+cmake-build-*/
+
+# General build folders
+build/
+
+# Compiled files
+*.o
+*.a
+*.so
+*.dylib
+
+# macOS
+.DS_Store
