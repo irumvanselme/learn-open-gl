@@ -5,6 +5,8 @@
 #ifndef LEARN_OPEN_GL_SHADER_H
 #define LEARN_OPEN_GL_SHADER_H
 
+#include <glm/glm.hpp>
+
 #include <string>
 #include <unordered_map>
 
@@ -37,6 +39,8 @@ public:
     void SetUniform1f(const std::string &name, float value);
 
     void SetUniform1i(const std::string &name, int value);
+
+    void SetUniformMat4f(const std::string &name, glm::mat4 value);
 
 private:
     int GetUniformLocation(const std::string &name);
