@@ -19,6 +19,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(stb)
 
+# Fetch GLM (OpenGL Mathematics library)
+FetchContent_Declare(
+        glm
+        GIT_REPOSITORY https://github.com/g-truc/glm.git
+        GIT_TAG 1.0.3
+)
+FetchContent_MakeAvailable(glm)
+
 # Fetch GLAD (OpenGL loader)
 FetchContent_Declare(
         glad
@@ -71,18 +79,29 @@ include_directories(${CMAKE_SOURCE_DIR}/src/Core)
 
 # Executables
 add_executable(LearnOpenGL ${CORE_MODULES} src/main.cpp)
+add_executable(_Practice src/Practice/main.cpp)
 
 target_compile_definitions(LearnOpenGL
         PRIVATE PROJECT_ROOT="${CMAKE_SOURCE_DIR}"
 )
 
-target_link_libraries(LearnOpenGL
-        PRIVATE
+set(DEPENDENCIES
         glfw
+        glm::glm
         glad_gl_core_46
         stb
-        OpenGL::GL
+        OpenGL::GL)
+
+target_link_libraries(LearnOpenGL
+        PRIVATE
+        ${DEPENDENCIES}
 )
+
+target_link_libraries(_Practice
+        PRIVATE
+        ${DEPENDENCIES}
+)
+
 
 # Platform-specific libraries
 if(APPLE)

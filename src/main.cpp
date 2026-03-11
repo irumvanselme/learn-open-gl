@@ -3,6 +3,9 @@
 //
 
 #include <glad/gl.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <Core.h>
 
 #define INITIAL_WIDTH 800
@@ -66,6 +69,13 @@ int main()
     while (!app.IsClosed())
     {
         app.NewFrame();
+        // Let us rotate based on the time to add an animation
+        auto rotation_vector = glm::vec3(0.0f, 0.0f, 1.0f);
+        auto transformation_vector = glm::mat4(1.0f);
+        transformation_vector = glm::rotate(transformation_vector, (float)glfwGetTime(), rotation_vector);
+        transformation_vector = glm::translate(transformation_vector, glm::vec3(0.5f, -0.5f, 0.0f));
+        shader.SetUniformMat4f("transformation_vector", transformation_vector);
+        shader.Bind();
         renderer.Draw(va, ib, shader);
         app.ClearFrame();
     }
