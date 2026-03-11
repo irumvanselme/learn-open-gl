@@ -102,6 +102,28 @@ target_link_libraries(_Practice
         ${DEPENDENCIES}
 )
 
+function (setup_lesson lesson_name)
+    add_executable(Lesson_${lesson_name} src/Lessons/${lesson_name}/main.cpp)
+
+    target_compile_definitions(Lesson_${lesson_name}
+            PRIVATE PROJECT_ROOT="${CMAKE_SOURCE_DIR}"
+    )
+
+    target_link_libraries(Lesson_${lesson_name}
+            PRIVATE
+            ${DEPENDENCIES}
+    )
+
+    target_link_libraries(Lesson_${lesson_name}
+            PRIVATE
+            ${DEPENDENCIES}
+    )
+
+endfunction()
+
+setup_lesson(triangle)
+setup_lesson(rectangle)
+setup_lesson(circle)
 
 # Platform-specific libraries
 if(APPLE)
