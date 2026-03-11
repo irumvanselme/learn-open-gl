@@ -41,6 +41,10 @@ void VertexArray::AddBuffer(const VertexBuffer &vb, const VertexBufferLayout &la
     {
         const auto &[type, count, normalized] = elements[i];
 
+#ifdef ENABLE_DEBUG_LOG
+        std::printf("glVertexAttribPointer(%d, %d, GL_FLOAT, GL_FALSE, %d, (void*)(%d));\n", i, count, layout.GetStride(), offset);
+#endif
+
         gl_try(glVertexAttribPointer(
             i,
             count,
