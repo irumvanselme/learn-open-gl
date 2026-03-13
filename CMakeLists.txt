@@ -124,6 +124,7 @@ endfunction()
 setup_lesson(triangle)
 setup_lesson(rectangle)
 setup_lesson(circle)
+setup_lesson(cube)
 
 # Platform-specific libraries
 if(APPLE)
